@@ -76,8 +76,8 @@ int main()
 	auto start = std::chrono::system_clock::now();
 	for (int i = 0; i < 100000; ++i) {
 		vector point;
-		for (std::size_t i = 0; i < point.size(); ++i)
-			point[i] = myrand();
+		for (auto &c: point)
+			c = myrand();
 		points.emplace(grid.morton(point), point);
 	}
 	auto end = std::chrono::system_clock::now();
@@ -89,8 +89,8 @@ int main()
 	int found = 0, match = 0;
 	for (int i = 0; i < num; ++i) {
 		vector point;
-		for (std::size_t i = 0; i < point.size(); ++i)
-			point[i] = myrand();
+		for (auto &c: point)
+			c = myrand();
 		auto range = points.equal_range(grid.morton(point));
 		for (auto it = range.first; it != range.second; ++it, ++found)
 			match += distance(it->second, point) < 0.001;
