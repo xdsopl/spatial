@@ -1,0 +1,17 @@
+
+spatial - spatial search acceleration using morton codes
+Written in 2014 by <Ahmet Inan> <xdsopl@googlemail.com>
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+by putting the voxels of our points in morton order (z order curve), we can use a binary search to quickly find the voxels later again;
+
+usage:
+
+# make test
+clang++ -stdlib=libc++ -std=c++11 -W -Wall -O3 -march=native -ffast-math    spatial.cc   -o spatial
+./spatial
+insertion of 100000 random points took 23 milliseconds.
+searching for 10000000 random points took 2065 milliseconds.
+1079 voxels found, 427 close matching points.
+
