@@ -73,19 +73,19 @@ int main()
 	}
 
 	typedef std::pair<uintof<vector::value_type>::type, vector> leaf;
-	std::array<leaf, 100000> map;
+	auto map = new std::array<leaf, 100000>;
 	auto start = std::chrono::system_clock::now();
-	for (auto &e: map) {
+	for (auto &e: *map) {
 		vector point;
 		for (auto &c: point)
 			c = myrand();
 		e.first = grid.morton(point);
 		e.second = point;
 	}
-	std::sort(map.begin(), map.end(), [](const leaf &a, const leaf &b){ return a.first < b.first; });
+	std::sort(map->begin(), map->end(), [](const leaf &a, const leaf &b){ return a.first < b.first; });
 	auto end = std::chrono::system_clock::now();
 	auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-	std::cout << "insertion of " << map.size() << " random points took " << msec.count() << " milliseconds." << std::endl;
+	std::cout << "insertion of " << map->size() << " random points took " << msec.count() << " milliseconds." << std::endl;
 
 	start = std::chrono::system_clock::now();
 	int num = 10000000;
@@ -95,8 +95,8 @@ int main()
 		for (auto &c: point)
 			c = myrand();
 		auto code = grid.morton(point);
-		auto lb = lower_bound(map.begin(), map.end(), code, [](const leaf &a, const decltype(code) &b) -> bool { return a.first < b; });
-		for (auto it = lb; it != map.end() && it->first == code; ++it, ++found)
+		auto lb = lower_bound(map->begin(), map->end(), code, [](const leaf &a, const decltype(code) &b) -> bool { return a.first < b; });
+		for (auto it = lb; it != map->end() && it->first == code; ++it, ++found)
 			match += distance(it->second, point) < 0.001;
 	}
 	end = std::chrono::system_clock::now();
