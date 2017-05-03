@@ -88,6 +88,27 @@ int main()
 	std::cout << "insertion of " << map->size() << " random points took " << msec.count() << " milliseconds." << std::endl;
 
 	start = std::chrono::system_clock::now();
+	int loop = 100;
+	for (int i = 0; i < loop; ++i) {
+		for (auto e: *map) {
+			auto code = e.first;
+			auto point = e.second;
+			auto lb = lower_bound(map->begin(), map->end(), code, [](const leaf &a, const decltype(code) &b) -> bool { return a.first < b; });
+			bool found = false;
+			for (auto it = lb; it != map->end() && it->first == code; ++it) {
+				if (it->second == point) {
+					found = true;
+					break;
+				}
+			}
+			assert(found);
+		}
+	}
+	end = std::chrono::system_clock::now();
+	msec = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+	std::cout << "searching for same " << map->size() << " points " << loop << " times took " << msec.count() << " milliseconds." << std::endl;
+
+	start = std::chrono::system_clock::now();
 	int num = 10000000;
 	int found = 0, match = 0;
 	for (int i = 0; i < num; ++i) {
